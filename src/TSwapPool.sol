@@ -1,16 +1,3 @@
-/**
- * /-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\
- * |                                     |
- * \ _____    ____                       /
- * -|_   _|  / ___|_      ____ _ _ __    -
- * /  | |____\___ \ \ /\ / / _` | '_ \   \
- * |  | |_____|__) \ V  V / (_| | |_) |  |
- * \  |_|    |____/ \_/\_/ \__,_| .__/   /
- * -                            |_|      -
- * /                                     \
- * |                                     |
- * \-/|\-/|\-/|\-/|\-/|\-/|\-/|\-/|\-/|\-/
- */
 // SPDX-License-Identifier: GNU General Public License v3.0
 pragma solidity 0.8.20;
 
@@ -37,9 +24,6 @@ contract TSwapPool is ERC20 {
 
     using SafeERC20 for IERC20;
 
-    /*//////////////////////////////////////////////////////////////
-                            STATE VARIABLES
-    //////////////////////////////////////////////////////////////*/
     IERC20 private immutable i_wethToken;
     IERC20 private immutable i_poolToken;
     uint256 private constant MINIMUM_WETH_LIQUIDITY = 1_000_000_000;
