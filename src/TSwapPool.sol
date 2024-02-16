@@ -30,9 +30,6 @@ contract TSwapPool is ERC20 {
     uint256 private swap_count = 0;
     uint256 private constant SWAP_COUNT_MAX = 10;
 
-    /*//////////////////////////////////////////////////////////////
-                                 EVENTS
-    //////////////////////////////////////////////////////////////*/
     event LiquidityAdded(
         address indexed liquidityProvider,
         uint256 wethDeposited,
@@ -43,6 +40,7 @@ contract TSwapPool is ERC20 {
         uint256 wethWithdrawn,
         uint256 poolTokensWithdrawn
     );
+    //  @audit-info : three fields should be indexed if there are more than three params
     event Swap(
         address indexed swapper,
         IERC20 tokenIn,
@@ -51,9 +49,6 @@ contract TSwapPool is ERC20 {
         uint256 amountTokenOut
     );
 
-    /*//////////////////////////////////////////////////////////////
-                               MODIFIERS
-    //////////////////////////////////////////////////////////////*/
     modifier revertIfDeadlinePassed(uint64 deadline) {
         if (deadline < uint64(block.timestamp)) {
             revert TSwapPool__DeadlineHasPassed(deadline);
@@ -68,22 +63,16 @@ contract TSwapPool is ERC20 {
         _;
     }
 
-    /*//////////////////////////////////////////////////////////////
-                               FUNCTIONS
-    //////////////////////////////////////////////////////////////*/
     constructor(
         address poolToken,
         address wethToken,
         string memory liquidityTokenName,
         string memory liquidityTokenSymbol
     ) ERC20(liquidityTokenName, liquidityTokenSymbol) {
+        // @audit-info missing zero address check !
         i_wethToken = IERC20(wethToken);
         i_poolToken = IERC20(poolToken);
     }
-
-    /*//////////////////////////////////////////////////////////////
-                        ADD AND REMOVE LIQUIDITY
-    //////////////////////////////////////////////////////////////*/
 
     /// @notice Adds liquidity to the pool
     /// @dev The invariant of this function is that the ratio of WETH, PoolTokens, and LiquidityTokens is the same
@@ -273,6 +262,7 @@ contract TSwapPool is ERC20 {
         returns (uint256 inputAmount)
     {
         return
+        // @aduit-info : Magic Numbers
             ((inputReserves * outputAmount) * 10000) /
             ((outputReserves - outputAmount) * 997);
     }
@@ -284,6 +274,7 @@ contract TSwapPool is ERC20 {
         uint256 minOutputAmount,
         uint64 deadline
     )
+    // @audit-info this should be external
         public
         revertIfZero(inputAmount)
         revertIfDeadlinePassed(deadline)
