@@ -315,6 +315,7 @@ contract TSwapPool is ERC20 {
      * @param inputToken ERC20 token to pull from caller
      * @param outputToken ERC20 token to send to caller
      * @param outputAmount The exact amount of tokens to send to caller
+     * @audit-info : Missing deadline param in natspec
      */
     function swapExactOutput(
         IERC20 inputToken,
@@ -379,6 +380,7 @@ contract TSwapPool is ERC20 {
         }
 
         swap_count++;
+        // @audit breakes the protocol invariant !!!
         if (swap_count >= SWAP_COUNT_MAX) {
             swap_count = 0;
             outputToken.safeTransfer(msg.sender, 1_000_000_000_000_000_000);
